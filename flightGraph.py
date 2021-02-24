@@ -78,5 +78,5 @@ nx.draw_networkx(g, ax=ax,
 
 #print paths and costs
 
-for path in nx.all_simple_edge_paths(g, "MSP", "CLE") :
-      print(path)
+#for path in nx.all_simple_edge_paths(g, "MSP", "CLE") :
+#      print(path)
