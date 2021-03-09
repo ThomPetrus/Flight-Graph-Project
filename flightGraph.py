@@ -17,7 +17,7 @@ from IPython.display import Image
 
 routes      = pd.read_csv(os.getcwd() + '/Data/processed/flightData.csv')
 locations   = pd.read_csv(os.getcwd() + '/Data/processed/airportLocations.csv')
-edges       = routes[['Origin', 'Dest', 'ItinFare', 'DepDelay', 'ArrDelay', 'ActualElapsedTime']].values
+edges       = routes[['Origin', 'Dest', 'ItinFare', 'DepTime', 'ArrTime', 'DepDelay', 'ArrDelay', 'ActualElapsedTime']].values
 
 origin  = routes['Origin'].tolist()
 dest    = routes['Dest'].tolist()
