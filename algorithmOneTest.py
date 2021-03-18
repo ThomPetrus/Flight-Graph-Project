@@ -18,12 +18,13 @@ from algorithmOne import AlgoOne
 from flightGraph import flightGraph
 
 def main():
-    algo = AlgoOne()
-    algo.printhi()
     fg = flightGraph()
-    fg.create_graph()
-    fg.plot_graph()
-    fg.plot_map()
+    graph = fg.create_graph()    
+    
+    start, dest = fg.get_input()
+    algo = AlgoOne(graph)
+    algo.best_flight(start, dest)
+    
   
 if __name__ == "__main__":
     main();

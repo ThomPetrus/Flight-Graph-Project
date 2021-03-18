@@ -26,26 +26,26 @@ class flightGraph:
     def load_data(self):
         self.routes      = pd.read_csv(os.getcwd() + FLIGHT_DATA)
         self.locations   = pd.read_csv(os.getcwd() + LOCATIONS_DATA)
-        self.edges       = self.routes[EDGES].values
+        self.flights       = self.routes[EDGES].values
         self.origin      = self.routes['Origin'].tolist()
         self.dest        = self.routes['Dest'].tolist()
-        self.nodes       = np.unique(self.origin + self.dest)
+        self.airports   = np.unique(self.origin + self.dest)
 
     
     def create_graph(self):
         self.g = nx.DiGraph();
-        for node in self.nodes:
+        for node in self.airports:
             self.g.add_node(node)
         
-        
-        for edge in self.edges:
+        for flight in self.flights:
             self.g.add_edge(
-                    edge[0],
-                    edge[1],
-                    totalCost = edge[2],
-                    departureDelay = edge[3],
-                    arrivalDelay = edge[4],
-                    totalTime = edge[5])
+                    flight[0],      # u
+                    flight[1],      # v
+                    totalCost       = flight[2],
+                    departureDelay  = flight[3],
+                    arrivalDelay    = flight[4],
+                    totalTime       = flight[5])
+            
         return self.g
     
     def plot_graph(self):
@@ -84,6 +84,24 @@ class flightGraph:
                          node_size=sizes,
                          labels=labels,
                          cmap=plt.cm.autumn)
+        
+    def print_locations(self):
+        for index, airport in self.locations['Origin'].sort_values().items():
+            print(airport)
+        
+    def get_input(self):
+        print("Airports\n----------------")
+        self.print_locations();
+        
+        start = ""
+        dest  = ""
+        while start not in self.locations['Origin'].values:
+            start = input("Enter Start Airport:")
+        
+        while dest not in self.locations['Origin'].values:
+            dest = input("Enter Destination Airport:")
+            
+        return start, dest
 
 
 def main():
