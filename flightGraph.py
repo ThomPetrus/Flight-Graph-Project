@@ -56,9 +56,9 @@ class flightGraph:
                  flight_num = 0
                  for flight in flights:
                       flight_data = flights[flight]
-                      self.g.add_edge(
-                              airport + '_' + neighbor + '_' + flight_num, # i.e. u = 'LAX_DEN_2' ?
-                              neighbor + '_' + airport + '_' + flight_num,
+                      self.graph.add_edge(
+                              airport + '_' + neighbor + '_' + str(flight_num), # i.e. u = 'LAX_DEN_2' ?
+                              neighbor + '_' + airport + '_' + str(flight_num),
                               departureTime   = flight_data['departureTime'],
                               departureDelay  = flight_data['departureDelay'],
                               arrTime         = flight_data['arrTime'],
