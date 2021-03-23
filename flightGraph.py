@@ -65,6 +65,7 @@ class flightGraph:
                               arrDelay        = flight_data['arrDelay'],
                               elapsedTime     = flight_data['elapsedTime'],
                               flightCost      = flight_data['flightCost'])
+                      flight_num+=1
 
         return self.G
     
@@ -128,6 +129,7 @@ class flightGraph:
 def main():
     fg = flightGraph()
     fg.create_graph()
+    print(fg.graph.nodes)
     #fg.plot_graph()
     #fg.plot_map()
   
