@@ -9,8 +9,6 @@ Created on Wed Mar 17 13:33:58 2021
 """
 Created on Wed Feb 24 02:48:50 2021
 
-Generates a vizualization of the flight graph data.
-
 @author: tpvan
 """
 
@@ -29,13 +27,3 @@ def main():
 if __name__ == "__main__":
     main();
 
-
-
-
-
-
-
-#print paths and costs
-
-#for path in nx.all_simple_edge_paths(g, "MSP", "CLE") :
-#      print(path)

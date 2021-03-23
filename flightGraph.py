@@ -27,15 +27,14 @@ class flightGraph:
     def load_data(self):
         self.routes      = pd.read_csv(os.getcwd() + FLIGHT_DATA)
         self.locations   = pd.read_csv(os.getcwd() + LOCATIONS_DATA)
-        self.flights       = self.routes[EDGES].values
+        self.flights     = self.routes[EDGES].values
         self.origin      = self.routes['Origin'].tolist()
         self.dest        = self.routes['Dest'].tolist()
-        self.airports   = np.unique(self.origin + self.dest)
+        self.airports    = np.unique(self.origin + self.dest)
 
     
     def create_graph(self):
         self.G = nx.MultiDiGraph();
-        
         
         for flight in self.flights:
             self.G.add_edge(
@@ -49,7 +48,6 @@ class flightGraph:
                     flightCost      = flight[7])
             self.G.nodes[flight[0]]['cost'] = sys.maxsize
             self.G.nodes[flight[1]]['cost'] = sys.maxsize
-        
         
         return self.G
     

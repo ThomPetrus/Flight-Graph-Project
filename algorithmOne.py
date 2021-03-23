@@ -14,8 +14,8 @@ class AlgoOne:
     def best_flight(self, start, dest):
         #search
         prev = self.search(start, dest)
-        # get path    
         
+        # get path    
         ptr = dest
         while ptr != start:
             airport     = list(prev[ptr].keys())[0]
@@ -26,8 +26,6 @@ class AlgoOne:
     
             ptr = airport
         
-              
-
     
     def get_cost(self, flight_data):
         #TODO: real cost function
@@ -51,35 +49,43 @@ class AlgoOne:
         # add to visited
         visited[start]   = True    
         
+        # while queue not empty
         while queue:
             
-            # dequeue min element
             min_cost        = sys.maxsize
             min_airport     = None
             current_airport = None
             
+            # iterate over queue and get min cost node
+            # will be start node on first iteration
             for i in range(len(queue)):
                 current_airport = queue[i]
                 current_airport_cost = self.graph.nodes[current_airport]['cost']
-                
                 if current_airport_cost < min_cost:
                     min_cost    = current_airport_cost
                     min_airport = current_airport
 
+            # dequeue min element
             queue.remove(min_airport)        
             
-            
+            # for each of the niehgboring airports of dequeued elemet
             for neighbor in self.graph.adj[min_airport]:
                 # if neighbor has not been visited 
                 if neighbor in queue:
                     
                     # get all flights between airport and neighbor
                     flights = self.graph.get_edge_data(min_airport, neighbor)
-                    
                     flight_num = 0
+                    
                     for flight in flights:
+                        
+                        # get flight data
                         flight_data = flights[flight]
+                        
+                        # check poth cost from current airport to neighbor with this flight
                         alt_path_cost = self.graph.nodes[min_airport]['cost'] + self.get_cost(flight_data)
+                    
+                        # if it is better then update neighbor cost and prev list
                         if alt_path_cost < self.graph.nodes[neighbor]['cost']:
                             self.graph.nodes[neighbor]['cost'] = alt_path_cost
                             prev[neighbor] = {min_airport:flight_num}
