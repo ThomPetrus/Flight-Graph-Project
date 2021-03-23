@@ -8,6 +8,7 @@ Generates a vizualization of the flight graph data.
 """
 
 import os
+import sys
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -17,7 +18,7 @@ from IPython.display import Image
 
 FLIGHT_DATA     = '/Data/processed/multiFlightData.csv'
 LOCATIONS_DATA  = '/Data/processed/airportLocations.csv'
-EDGES = ['Origin', 'Dest', 'ItinFare', 'DepTime', 'ArrTime', 'DepDelay', 'ArrDelay', 'ActualElapsedTime']
+EDGES = ['Origin', 'Dest', 'DepTime', 'DepDelay', 'ArrTime', 'ArrDelay', 'ActualElapsedTime', 'ItinFare']
 
 class flightGraph:
     def __init__(self): 
@@ -33,24 +34,28 @@ class flightGraph:
 
     
     def create_graph(self):
-        self.g = nx.DiGraph();
-        for node in self.airports:
-            self.g.add_node(node)
+        self.G = nx.MultiDiGraph();
+        
         
         for flight in self.flights:
-            self.g.add_edge(
+            self.G.add_edge(
                     flight[0],      # u
                     flight[1],      # v
-                    totalCost       = flight[2],
+                    departureTime   = flight[2],
                     departureDelay  = flight[3],
-                    arrivalDelay    = flight[4],
-                    totalTime       = flight[5])
-            
-        return self.g
+                    arrTime         = flight[4],
+                    arrDelay        = flight[5],
+                    elapsedTime     = flight[6],
+                    flightCost      = flight[7])
+            self.G.nodes[flight[0]]['cost'] = sys.maxsize
+            self.G.nodes[flight[1]]['cost'] = sys.maxsize
+        
+        
+        return self.G
     
     def plot_graph(self):
         fig, ax = plt.subplots(1, 1, figsize=(6, 6))
-        nx.draw_networkx(self.g, ax=ax, with_labels=True, node_size=5, width=.5)
+        nx.draw_networkx(self.G, ax=ax, with_labels=True, node_size=5, width=.5)
         ax.set_axis_off()
         
     def plot_map(self):
@@ -60,11 +65,11 @@ class flightGraph:
            for index, airport in self.locations.to_dict('index').items()
          }
     
-        deg = nx.degree(self.g)
-        sizes = [5 * deg[iata] for iata in self.g.nodes]
+        deg = nx.degree(self.G)
+        sizes = [deg[iata] for iata in self.G.nodes]
         
-        labels = {iata: iata if deg[iata] >= 50 else ''
-                  for iata in self.g.nodes}
+        labels = {iata: iata if deg[iata] >= 200 else ''
+                  for iata in self.G.nodes}
         
         crs = ccrs.PlateCarree()
         fig, ax = plt.subplots(1, 1, figsize=(20, 20), subplot_kw=dict(projection=crs))
@@ -76,7 +81,7 @@ class flightGraph:
         # Full US -> include Hawaii
         #ax.set_extent([-170, -62, 5, 50])
         
-        nx.draw_networkx(self.g, ax=ax,
+        nx.draw_networkx(self.G, ax=ax,
                          font_size=16,
                          alpha=.9,
                          width=.075,
@@ -90,8 +95,9 @@ class flightGraph:
             print(airport)
         
     def get_input(self):
-        print("Airports\n----------------")
-        self.print_locations();
+        #TODO: prettify print out of airports
+        #print("Airports\n----------------")
+        #self.print_locations();
         
         start = ""
         dest  = ""
