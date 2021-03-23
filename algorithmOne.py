@@ -35,19 +35,15 @@ class AlgoOne:
     def search(self, start, dest):
         
         prev        = {}
-        visited     = {}
         queue       = []
         
         # add to queue
         for airport in self.graph.nodes():
             queue.append(airport)
             prev[airport] = None;
-            visited[airport] = False
         
         # distance to start is 0
         self.graph.nodes[start]['cost'] = 0
-        # add to visited
-        visited[start]   = True    
         
         # while queue not empty
         while queue:
@@ -68,7 +64,7 @@ class AlgoOne:
             # dequeue min element
             queue.remove(min_airport)        
             
-            # for each of the niehgboring airports of dequeued elemet
+            # for each of the neighgboring airports of dequeued element
             for neighbor in self.graph.adj[min_airport]:
                 # if neighbor has not been visited 
                 if neighbor in queue:

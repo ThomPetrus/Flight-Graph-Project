@@ -49,6 +49,23 @@ class flightGraph:
             self.G.nodes[flight[0]]['cost'] = sys.maxsize
             self.G.nodes[flight[1]]['cost'] = sys.maxsize
         
+        self.graph = nx.DiGraph()
+        for airport in self.G.nodes():
+            for neighbor in self.G.adj[airport]:
+                 flights = self.G.get_edge_data(airport, neighbor)
+                 flight_num = 0
+                 for flight in flights:
+                      flight_data = flights[flight]
+                      self.g.add_edge(
+                              airport + '_' + neighbor + '_' + flight_num, # i.e. u = 'LAX_DEN_2' ?
+                              neighbor + '_' + airport + '_' + flight_num,
+                              departureTime   = flight_data['departureTime'],
+                              departureDelay  = flight_data['departureDelay'],
+                              arrTime         = flight_data['arrTime'],
+                              arrDelay        = flight_data['arrDelay'],
+                              elapsedTime     = flight_data['elapsedTime'],
+                              flightCost      = flight_data['flightCost'])
+
         return self.G
     
     def plot_graph(self):
@@ -111,8 +128,8 @@ class flightGraph:
 def main():
     fg = flightGraph()
     fg.create_graph()
-    fg.plot_graph()
-    fg.plot_map()
+    #fg.plot_graph()
+    #fg.plot_map()
   
 if __name__ == "__main__":
     main();
