@@ -40,15 +40,33 @@ class flightGraph:
             self.G.add_edge(
                     flight[0],      # u
                     flight[1],      # v
+                    origin          = flight[0],
+                    dest            = flight[1],
                     departureTime   = flight[2],
                     departureDelay  = flight[3],
                     arrTime         = flight[4],
                     arrDelay        = flight[5],
                     elapsedTime     = flight[6],
                     flightCost      = flight[7])
-            self.G.nodes[flight[0]]['cost'] = sys.maxsize
-            self.G.nodes[flight[1]]['cost'] = sys.maxsize
-        
+            
+            self.G.nodes[flight[0]]['cost']      = sys.maxsize
+            self.G.nodes[flight[1]]['cost']      = sys.maxsize
+            self.G.nodes[flight[0]]['wait_time'] = sys.maxsize
+            self.G.nodes[flight[1]]['wait_time'] = sys.maxsize
+            self.G.nodes[flight[0]]['prev']      = None
+            self.G.nodes[flight[1]]['prev']      = None
+            
+            # idk if this is needed :
+            current_flights = self.G.get_edge_data(flight[0], flight[1])
+            flight_num = 0 
+            for current_flight in current_flights:
+                self.G.nodes[flight[0]][flight_num] = {}
+                self.G.nodes[flight[1]][flight_num] = {}
+                self.G.nodes[flight[0]][flight_num]['wait_time'] = sys.maxsize
+                self.G.nodes[flight[1]][flight_num]['wait_time'] = sys.maxsize
+                flight_num+=1
+    
+        """    
         self.graph = nx.DiGraph()
         for airport in self.G.nodes():
             for neighbor in self.G.adj[airport]:
@@ -66,7 +84,8 @@ class flightGraph:
                               elapsedTime     = flight_data['elapsedTime'],
                               flightCost      = flight_data['flightCost'])
                       flight_num+=1
-
+        """
+        
         return self.G
     
     def plot_graph(self):
@@ -130,7 +149,7 @@ def main():
     fg = flightGraph()
     fg.create_graph()
     print(fg.graph.nodes)
-    #fg.plot_graph()
+    fg.plot_graph()
     #fg.plot_map()
   
 if __name__ == "__main__":
