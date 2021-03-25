@@ -17,7 +17,7 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
 # Data Sets
-FLIGHT_DATA     = '/Data/processed/multiFlightData.csv'
+FLIGHT_DATA     = '/Data/processed/multiFlightData_600k_flights.csv'
 LOCATIONS_DATA  = '/Data/processed/airportLocations.csv'
 
 # Columns in flight data set

@@ -163,7 +163,7 @@ class AlgoOne:
             curr_wait_time = next_dep_time - arr_time 
             
             # if it is negative then arrival was after departure + 24 hours
-            if curr_wait_time < 0:
+            if curr_wait_time <= 0:
                 curr_wait_time = MINS_IN_DAY - (-1) * curr_wait_time
                 
             return curr_wait_time
