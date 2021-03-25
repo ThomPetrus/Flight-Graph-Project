@@ -215,7 +215,7 @@ class AlgoOne:
         while queue:
             
             min_cost        = sys.maxsize
-            min_airport     = None
+            min_airport     = queue[0]
             current_airport = None
             
             # iterate over queue and get min cost node
@@ -226,7 +226,7 @@ class AlgoOne:
                 if current_airport_cost < min_cost:
                     min_cost    = current_airport_cost
                     min_airport = current_airport
-
+        
             # dequeue min element
             queue.remove(min_airport)        
             
