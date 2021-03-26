@@ -242,7 +242,7 @@ class FlightGraph:
 def main():
     fg = FlightGraph()
     fg.plot_graph()
-    fg.plot_map(full)
+    fg.plot_map(False)
   
 if __name__ == "__main__":
     main();
