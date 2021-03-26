@@ -3,7 +3,7 @@
 Created on Wed Feb 24 02:48:50 2021
 
 Create the FlightGraph used in our algorithms
-Can also generate a vizualization of the flight graph data on a map
+Can also generate a vizualization of the flight graph data on a map.
 
 @author: tpvan
 """
@@ -17,9 +17,14 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
 # Data Sets
-FLIGHT_DATA     = '/Data/processed/multiFlightData_5k_flights.csv'
-#FLIGHT_DATA     = '/Data/processed/FullFlightData.csv'             # 15 million flights
-LOCATIONS_DATA  = '/Data/processed/airportLocations.csv'
+
+# for algo test
+FLIGHT_DATA     = '/Data/processed/multiFlightData_600k.csv'
+LOCATIONS_DATA  = '/Data/processed/airportLocations_600k.csv'
+
+# if you want to see a pretty map in reasonable time
+FLIGHT_DATA_FOR_MAP     = '/Data/processed/multiFlightData_single_flight_for_map.csv'
+LOCATIONS_DATA_FOR_MAP  = '/Data/processed/airportLocations_single_flight_for_map.csv'
 
 # Columns in flight data set
 COL_LIST = ['Origin', 'Dest', 'DepTime', 'DepDelay', 'ArrTime', 'ArrDelay', 'ActualElapsedTime', 'ItinFare']
