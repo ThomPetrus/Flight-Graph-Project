@@ -17,7 +17,7 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 
 # Data Sets
-FLIGHT_DATA     = '/Data/processed/multiFlightData_600k_flights.csv'
+FLIGHT_DATA     = '/Data/processed/multiFlightData_5k_flights.csv'
 #FLIGHT_DATA     = '/Data/processed/FullFlightData.csv'             # 15 million flights
 LOCATIONS_DATA  = '/Data/processed/airportLocations.csv'
 
@@ -122,7 +122,10 @@ class FlightGraph:
         sizes = [deg[iata]/4 for iata in self.G.nodes]
         
         # only show labels on airports with in-degree greater than 5% of flights
-        labels = {iata: iata if deg[iata] >= (len(self.flights) / 20) else ''
+        #labels = {iata: iata if deg[iata] >= (len(self.flights) / 20) else ''
+        #          for iata in self.G.nodes}
+        
+        labels = {iata: iata 
                   for iata in self.G.nodes}
         
         # create map
@@ -242,7 +245,7 @@ class FlightGraph:
 def main():
     fg = FlightGraph()
     fg.plot_graph()
-    fg.plot_map(False)
+    fg.plot_map(True)
   
 if __name__ == "__main__":
     main();
