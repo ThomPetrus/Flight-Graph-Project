@@ -112,7 +112,7 @@ class FlightGraph:
         nx.draw_networkx(self.G, ax=ax, with_labels=True, node_size=5, width=.5)
         ax.set_axis_off()
         
-    def plot_map(self, full=False):
+    def plot_map(self, full=False, all_labels=False):
         """
         Plot graph on map of United States.
         
@@ -133,10 +133,11 @@ class FlightGraph:
         sizes = [deg[iata]/4 for iata in self.G.nodes]
         
         # only show labels on airports with in-degree greater than 5% of flights
-        #labels = {iata: iata if deg[iata] >= (len(self.flights) / 20) else ''
-        #          for iata in self.G.nodes}
+        labels = {iata: iata if deg[iata] >= (len(self.flights) / 20) else ''
+                  for iata in self.G.nodes}
         
-        labels = {iata: iata 
+        if all_labels:
+            labels = {iata: iata 
                   for iata in self.G.nodes}
         
         # create map
@@ -255,8 +256,8 @@ class FlightGraph:
         
 def main():
     fg = FlightGraph()
-    fg.plot_graph()
-    fg.plot_map(False)
+    #fg.plot_graph()
+    fg.plot_map(True, True)
   
 if __name__ == "__main__":
     main();
