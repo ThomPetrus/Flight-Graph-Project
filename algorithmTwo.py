@@ -10,12 +10,9 @@ flight cost, total flight time and wait time in airports.
 
 @author: tpvan
 """
-import sys
+
 from minHeap import MinHeap
-
 MINS_IN_DAY = 1440
-
-
 
 class AlgoTwo:
     """
@@ -189,7 +186,6 @@ class AlgoTwo:
         """
         return self.COST_WEIGHT * flight_data['flightCost'] + self.FLIGHT_TIME_WEIGHT * flight_data['elapsedTime'] + self.WAIT_TIME_WEIGHT * wait_time
         
-        
     def search(self, start, dest):
         """
         Parameters:
@@ -212,7 +208,6 @@ class AlgoTwo:
         
         # while heap is not empty
         while heap.size > 0:
-            
             min_airport_node = heap.remove()
             min_airport = min_airport_node['name']
             visited.append(min_airport)
@@ -242,7 +237,6 @@ class AlgoTwo:
                         
                         # check path cost from current airport to neighbor with this flight also considering wait time
                         alt_path_cost = self.graph.nodes[min_airport]['cost'] + self.get_cost(flight_data, alt_path_wait_time)
-                        
                         
                         # if it is better then update neighbor cost and prev list
                         if alt_path_cost < self.graph.nodes[neighbor]['cost']:
