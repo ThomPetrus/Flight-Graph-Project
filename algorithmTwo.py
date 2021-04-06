@@ -215,6 +215,7 @@ class AlgoTwo:
             
             min_airport_node = heap.remove()
             min_airport = min_airport_node['name']
+            visited.append(min_airport)
             
             # for each of the neighgboring airports of dequeued element
             for neighbor in self.graph.adj[min_airport]:
@@ -239,19 +240,19 @@ class AlgoTwo:
                         # check wait time for this flight considering flight taken to get here    
                         alt_path_wait_time = self.graph.nodes[min_airport]['wait_time'] + self.get_wait_time(min_airport, self.graph.nodes[min_airport]['prev'], flight_data)
                         
-                        # check poth cost from current airport to neighbor with this flight also considering wait time
+                        # check path cost from current airport to neighbor with this flight also considering wait time
                         alt_path_cost = self.graph.nodes[min_airport]['cost'] + self.get_cost(flight_data, alt_path_wait_time)
                         
-                        heap.insert({'name':neighbor, 'cost':alt_path_cost})
                         
                         # if it is better then update neighbor cost and prev list
                         if alt_path_cost < self.graph.nodes[neighbor]['cost']:
                             self.graph.nodes[neighbor]['cost'] = alt_path_cost
                             self.graph.nodes[neighbor]['wait_time'] = alt_path_wait_time
                             self.graph.nodes[neighbor]['prev'] = {min_airport:flight_num}
+                            heap.insert({'name':neighbor, 'cost':alt_path_cost})
                             
                         flight_num+=1
-                    visited.append(neighbor)
+            
                     
 
             

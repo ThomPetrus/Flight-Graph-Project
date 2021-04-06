@@ -41,11 +41,7 @@ class MinHeap:
         
         try:
             if not self.is_leaf(pos):
-                if (self.heap[pos]['cost'] 
-                > self.heap[self.left_child(pos)]['cost']
-                or self.heap[pos]['cost']
-                > self.heap[self.right_child(pos)]['cost']):
-                    
+                if (self.heap[pos]['cost'] > self.heap[self.left_child(pos)]['cost'] or self.heap[pos]['cost'] > self.heap[self.right_child(pos)]['cost']):    
                     if self.heap[self.left_child(pos)]['cost'] < self.heap[self.right_child(pos)]['cost']:
                         self.swap(pos, self.left_child(pos))
                         self.min_heapify(self.left_child(pos))
@@ -54,7 +50,6 @@ class MinHeap:
                         self.min_heapify(self.right_child(pos))
         except IndexError:
             print("Min Heap Index Error : pos => " + str(pos))
-            
             
     def insert(self, node):
         if self.size >= self.max_size:
