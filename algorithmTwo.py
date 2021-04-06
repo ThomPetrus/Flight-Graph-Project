@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Mar 17 13:39:45 2021
+Created on Mon Apr  5 16:57:09 2021
 
 COSC320 - Analysis of Algorithms - UBCO
 
-Implementation of Algorithm 1 from Milestone 1 for the Project.
+Implementation of Algorithm 2 from Milestone 2 for the Project.
 An algorithm to determine the best non direct flight based on
 flight cost, total flight time and wait time in airports.
 
 @author: tpvan
 """
 import sys
+from minHeap import MinHeap
 
 MINS_IN_DAY = 1440
 
-class AlgoOne:
+
+
+class AlgoTwo:
     """
-    A Class that represenst the algorithm we came up with for Milestone 1
+    A Class that represenst the algorithm we came up with for Milestone 2
     
     Attributes:
     --------------------------------------------------------------------------------
@@ -197,41 +200,27 @@ class AlgoOne:
                 Airport code of the destination airport
         ---------------------------------------------------------------------------------
         """
-        # simple list as queue
-        queue = []
-        
-        # add all nodes to queue and set previous to none
-        for airport in self.graph.nodes():
-            queue.append(airport)
+
+        # create a min heap and track visited nodes
+        heap = MinHeap(len(self.graph.nodes))
+        visited = []
         
         # distance to start and wait time is 0
         self.graph.nodes[start]['cost']      = 0
         self.graph.nodes[start]['wait_time'] = 0
+        heap.insert({'name' : start, 'cost' : 0})
         
-        # while queue not empty
-        while queue:
+        # while heap is not empty
+        while heap.size > 0:
             
-            min_cost        = sys.maxsize
-            min_airport     = queue[0]
-            current_airport = None
-            
-            # iterate over queue and get min cost node
-            # will be start node on first iteration
-            for i in range(len(queue)):
-                current_airport      = queue[i]
-                current_airport_cost = self.graph.nodes[current_airport]['cost']
-                if current_airport_cost < min_cost:
-                    min_cost    = current_airport_cost
-                    min_airport = current_airport
-        
-            # dequeue min element
-            queue.remove(min_airport)        
+            min_airport_node = heap.remove()
+            min_airport = min_airport_node['name']
             
             # for each of the neighgboring airports of dequeued element
             for neighbor in self.graph.adj[min_airport]:
                 
                 # if neighbor has not been visited 
-                if neighbor in queue:
+                if neighbor not in visited:
                     
                     # get all flights between airport and neighbor - MultiDiGraph - multiple edges
                     flights = self.graph.get_edge_data(min_airport, neighbor)
@@ -247,11 +236,13 @@ class AlgoOne:
                         # get flight data
                         flight_data = flights[flight]
                         
-                        # check wait time for this flight considering flight taken to get here
+                        # check wait time for this flight considering flight taken to get here    
                         alt_path_wait_time = self.graph.nodes[min_airport]['wait_time'] + self.get_wait_time(min_airport, self.graph.nodes[min_airport]['prev'], flight_data)
                         
                         # check poth cost from current airport to neighbor with this flight also considering wait time
                         alt_path_cost = self.graph.nodes[min_airport]['cost'] + self.get_cost(flight_data, alt_path_wait_time)
+                        
+                        heap.insert({'name':neighbor, 'cost':alt_path_cost})
                         
                         # if it is better then update neighbor cost and prev list
                         if alt_path_cost < self.graph.nodes[neighbor]['cost']:
@@ -260,5 +251,10 @@ class AlgoOne:
                             self.graph.nodes[neighbor]['prev'] = {min_airport:flight_num}
                             
                         flight_num+=1
+                    visited.append(neighbor)
+                    
+
+            
+                    
             
             
