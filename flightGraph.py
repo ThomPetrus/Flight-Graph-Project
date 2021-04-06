@@ -9,6 +9,7 @@ Can also generate a vizualization of the flight graph data on a map.
 """
 
 import os
+import sys
 import numpy as np
 import pandas as pd
 import networkx as nx
@@ -95,6 +96,11 @@ class FlightGraph:
                     arrDelay        = flight[5],
                     elapsedTime     = flight[6],
                     flightCost      = flight[7])
+            
+        for airport in self.G.nodes():
+            self.G.nodes[airport]['prev']      = None
+            self.G.nodes[airport]['cost']      = sys.maxsize
+            self.G.nodes[airport]['wait_time'] = sys.maxsize
         
         return self.G
     
